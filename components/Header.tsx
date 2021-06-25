@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       ...theme.typography.h2,
+      color: theme.palette.text.primary,
     },
     nav: {
       display: 'grid',
@@ -41,7 +42,11 @@ export const Header = () => {
   const classes = useStyles({ themeColor: theme });
   return (
     <header className={classes.header}>
-      <div className={classes.title}>🦄 BS</div>
+      <Link href="/">
+        <a>
+          <div className={classes.title}>🦄 BS</div>
+        </a>
+      </Link>
       <nav className={classes.nav}>
         <Link href="/games">
           <a className={classes.link}>Games</a>

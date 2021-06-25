@@ -13,8 +13,34 @@ interface Themes {
 }
 
 const themes: Themes = {
-  dark: { palette: { type: 'dark' } },
-  light: { palette: { type: 'light' } },
+  dark: {
+    palette: { type: 'dark' },
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          a: {
+            color: '#ffc600',
+            textDecoration: 'none',
+            fontWeight: 600,
+          },
+        },
+      },
+    },
+  },
+  light: {
+    palette: { type: 'light' },
+    overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          a: {
+            color: '#4A78E6',
+            textDecoration: 'none',
+            fontWeight: 600,
+          },
+        },
+      },
+    },
+  },
 };
 
 interface ThemeContextProps {
