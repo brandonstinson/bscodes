@@ -8,7 +8,7 @@ import Document, {
 } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
-export default class _Document extends Document {
+export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
@@ -27,7 +27,7 @@ export default class _Document extends Document {
   }
 }
 
-_Document.getInitialProps = async (ctx) => {
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
 

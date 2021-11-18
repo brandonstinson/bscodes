@@ -4,61 +4,61 @@ const randomIntInRange = (min: number, max: number): number => {
 };
 
 // Types
-interface MineLocations {
+interface BombLocations {
   [key: number]: number[];
 }
 
-export interface Square {
+export interface SquareType {
   row: number;
   col: number;
-  type: `empty` | `mine`;
+  type: `empty` | `bomb`;
   adjacent: number;
   status: `covered` | `uncovered` | `flagged`;
 }
 
-export type Grid = Square[][];
+export type Grid = SquareType[][];
 
 export type GameStatus = `ongoing` | `won` | `lost`;
 
 interface StatusCount {
   uncovered: {
     empty: number;
-    mine: number;
+    bomb: number;
   };
   flagged: {
     empty: number;
-    mine: number;
+    bomb: number;
   };
 }
 
-// Minesweeper utils
-const generateMines = (gridSize: number, numberOfMines: number): MineLocations => {
-  const mines: Set<number> = new Set();
-  while (mines.size < numberOfMines) {
-    mines.add(randomIntInRange(1, gridSize * gridSize));
+// BombFinder utils
+const generateBombs = (gridSize: number, numberOfBombs: number): BombLocations => {
+  const bombs: Set<number> = new Set();
+  while (bombs.size < numberOfBombs) {
+    bombs.add(randomIntInRange(1, gridSize * gridSize));
   }
-  const mineLocations: MineLocations = {};
-  mines.forEach((value) => {
+  const bombLocations: BombLocations = {};
+  bombs.forEach((value) => {
     const key = Math.ceil(value / gridSize) - 1;
     const val = (value - 1) % gridSize;
-    if (Object.keys(mineLocations).includes(String(key))) {
-      mineLocations[key].push(val);
+    if (Object.keys(bombLocations).includes(String(key))) {
+      bombLocations[key].push(val);
     } else {
       const newArr = [val];
-      mineLocations[key] = newArr;
+      bombLocations[key] = newArr;
     }
   });
-  return mineLocations;
+  return bombLocations;
 };
 
-export const generateGrid = (gridSize: number, numberOfMines: number): Grid => {
-  const mines = generateMines(gridSize, numberOfMines);
+export const generateGrid = (gridSize: number, numberOfBombs: number): Grid => {
+  const bombs = generateBombs(gridSize, numberOfBombs);
   const outerArray: Grid = [];
   for (let i = 0; i < gridSize; i++) {
-    const innerArr: Square[] = [];
+    const innerArr: SquareType[] = [];
     for (let j = 0; j < gridSize; j++) {
-      if (mines[i] && mines[i].includes(j)) {
-        innerArr.push({ row: i, col: j, type: `mine`, adjacent: 0, status: `covered` });
+      if (bombs[i] && bombs[i].includes(j)) {
+        innerArr.push({ row: i, col: j, type: `bomb`, adjacent: 0, status: `covered` });
       } else {
         innerArr.push({ row: i, col: j, type: `empty`, adjacent: 0, status: `covered` });
       }
@@ -69,8 +69,8 @@ export const generateGrid = (gridSize: number, numberOfMines: number): Grid => {
   return outerArray;
 };
 
-const getAdjacentSquares = (grid: Grid, i: number, j: number): Square[] => {
-  const adjacent: Square[] = [];
+const getAdjacentSquares = (grid: Grid, i: number, j: number): SquareType[] => {
+  const adjacent: SquareType[] = [];
   // previous row
   if (grid[i - 1]) {
     if (grid[i - 1][j - 1]) adjacent.push(grid[i - 1][j - 1]);
@@ -94,18 +94,18 @@ const populateAdjacents = (grid: Grid): void => {
     row.forEach((square, j) => {
       if (square.type === `empty`) {
         const adjacentSquares = getAdjacentSquares(grid, i, j);
-        const mineSquares = adjacentSquares.filter((adjSq) => adjSq.type === `mine`);
-        square.adjacent = mineSquares.length;
+        const bombSquares = adjacentSquares.filter((adjSq) => adjSq.type === `bomb`);
+        square.adjacent = bombSquares.length;
       }
     });
   });
 };
 
-const revealAllMines = (grid: Grid): Grid => {
+const revealAllBombs = (grid: Grid): Grid => {
   const newGrid = [...grid];
   newGrid.forEach((row) => {
     row.forEach((square) => {
-      if (square.type === `mine`) {
+      if (square.type === `bomb`) {
         square.status = `uncovered`;
       }
     });
@@ -115,57 +115,57 @@ const revealAllMines = (grid: Grid): Grid => {
 
 export const statusCount = (grid: Grid): StatusCount => {
   let uncoveredEmpty = 0;
-  let uncoveredMine = 0;
+  let uncoveredBomb = 0;
   let flaggedEmpty = 0;
-  let flaggedMine = 0;
+  let flaggedBomb = 0;
   grid.forEach((row) => {
     row.forEach((square) => {
       if (square.status === `uncovered` && square.type === `empty`) {
         uncoveredEmpty++;
       }
-      if (square.status === `uncovered` && square.type === `mine`) {
-        uncoveredMine++;
+      if (square.status === `uncovered` && square.type === `bomb`) {
+        uncoveredBomb++;
       }
       if (square.status === `flagged` && square.type === `empty`) {
         flaggedEmpty++;
       }
-      if (square.status === `flagged` && square.type === `mine`) {
-        flaggedMine++;
+      if (square.status === `flagged` && square.type === `bomb`) {
+        flaggedBomb++;
       }
     });
   });
   return {
     uncovered: {
       empty: uncoveredEmpty,
-      mine: uncoveredMine,
+      bomb: uncoveredBomb,
     },
     flagged: {
       empty: flaggedEmpty,
-      mine: flaggedMine,
+      bomb: flaggedBomb,
     },
   };
 };
 
-export const getGameStatus = (grid: Grid, gridSize: number, numberOfMines: number): GameStatus => {
+export const getGameStatus = (grid: Grid, gridSize: number, numberOfBombs: number): GameStatus => {
   const squareCount = gridSize * gridSize;
-  const uncoveredCount = squareCount - numberOfMines;
+  const uncoveredCount = squareCount - numberOfBombs;
   const sc = statusCount(grid);
-  if (sc.uncovered.mine > 0) {
+  if (sc.uncovered.bomb > 0) {
     return `lost`;
   }
-  if (sc.uncovered.empty === uncoveredCount && sc.flagged.mine === numberOfMines) {
+  if (sc.uncovered.empty === uncoveredCount && sc.flagged.bomb === numberOfBombs) {
     return `won`;
   }
   return `ongoing`;
 };
 
-export const updateGrid = (grid: Grid, square: Square, clickType: string): Grid => {
+export const updateGrid = (grid: Grid, square: SquareType, clickType: string): Grid => {
   const newGrid = [...grid];
   if (clickType === `right`) {
     square.status = square.status === `covered` ? `flagged` : `covered`;
   } else {
-    if (square.type === `mine`) {
-      return revealAllMines(newGrid);
+    if (square.type === `bomb`) {
+      return revealAllBombs(newGrid);
     }
     newGrid[square.row][square.col].status = `uncovered`;
     if (square.adjacent === 0) {
@@ -175,7 +175,7 @@ export const updateGrid = (grid: Grid, square: Square, clickType: string): Grid 
   return newGrid;
 };
 
-const uncoverAdjacents = (grid: Grid, square: Square): void => {
+const uncoverAdjacents = (grid: Grid, square: SquareType): void => {
   const adjacents = getAdjacentSquares(grid, square.row, square.col);
   const adjacentZeros = adjacents.filter(
     (el) => el.status === `covered` && el.type === `empty` && el.adjacent === 0

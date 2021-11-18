@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       fontSize: '40px',
       borderRadius: theme.shape.borderRadius,
+      cursor: 'default',
     },
   })
 );

@@ -1,8 +1,7 @@
-import { useContext } from 'react';
 import Link from 'next/link';
 import { createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
 import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
-import { ThemeContext } from '../components/ThemeProvider';
+import { useThemeContext } from '../pages/_app';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -10,10 +9,10 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'grid',
       gridTemplateColumns: 'auto 1fr auto',
       alignItems: 'center',
-      padding: theme.spacing(3),
+      padding: theme.spacing(3, 5),
     },
     title: {
-      ...theme.typography.h2,
+      ...theme.typography.h4,
       color: theme.palette.text.primary,
     },
     nav: {
@@ -38,13 +37,13 @@ interface StyledLinkProps {
 }
 
 export const Header = () => {
-  const { theme, toggle } = useContext(ThemeContext);
+  const { theme, toggle } = useThemeContext();
   const classes = useStyles({ themeColor: theme });
   return (
     <header className={classes.header}>
       <Link href="/">
         <a>
-          <div className={classes.title}>🦄 BS</div>
+          <div className={classes.title}>BS</div>
         </a>
       </Link>
       <nav className={classes.nav}>

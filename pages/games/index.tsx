@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 const Games = () => (
-  <Link href="/games/minesweeper">
-    <a>Minesweeper</a>
+  <Link href="/games/bombfinder">
+    <a>BombFinder</a>
   </Link>
 );
 
