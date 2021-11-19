@@ -1,28 +1,22 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import styled from 'styled-components';
 import { GameStatus, SquareType } from '../../utils/bombfinderUtils';
 
-const useStyles = makeStyles<Theme, SquareProps>((theme: Theme) =>
-  createStyles({
-    square: {
-      backgroundColor: ({ square }) =>
-        square.status === `uncovered` ? `#d8dee9` : '#c2c2c2',
-      color: ({ square }) => colorMap[square.adjacent],
-      fontWeight: 900,
-      width: '30px',
-      height: '30px',
-      border: ({ square }) =>
-        square.status !== `uncovered`
-          ? '4px outset #eceff4'
-          : '4px inset #eceff4',
-      display: 'grid',
-      justifyItems: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      cursor: ({ gameStatus }) =>
-        gameStatus === 'ongoing' ? 'pointer' : 'default',
-    },
-  })
-);
+const StyledSquare = styled.div<{ gameStatus: GameStatus; square: SquareType }>`
+  background-color: ${({ square }) =>
+    square.status === 'uncovered' ? '#d8dee9' : '#c2c2c2'};
+  color: ${({ square }) => colorMap[square.adjacent]};
+  font-weight: 900;
+  width: 30px;
+  height: 30px;
+  border: ${({ square }) =>
+    square.status !== 'uncovered' ? '4px outset #eceff4' : '4px inset #eceff4'};
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  cursor: ${({ gameStatus }) =>
+    gameStatus === 'ongoing' ? 'pointer' : 'default'};
+`;
 
 enum colorMap {
   /*eslint-disable */
@@ -45,8 +39,6 @@ type SquareProps = {
 };
 
 const Square = (props: SquareProps): JSX.Element => {
-  const classes = useStyles(props);
-
   const { square, leftClickFn, rightClickFn, gameStatus } = props;
   const { status, type, adjacent } = square;
 
@@ -58,8 +50,9 @@ const Square = (props: SquareProps): JSX.Element => {
   };
 
   return (
-    <div
-      className={classes.square}
+    <StyledSquare
+      gameStatus={gameStatus}
+      square={square}
       onClick={(e) => {
         e.preventDefault();
         if (gameStatus === 'ongoing' && status === `covered`) {
@@ -73,7 +66,7 @@ const Square = (props: SquareProps): JSX.Element => {
         }
       }}>
       {getText()}
-    </div>
+    </StyledSquare>
   );
 };
 

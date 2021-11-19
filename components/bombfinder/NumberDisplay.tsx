@@ -1,28 +1,23 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import styled from 'styled-components';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    numbers: {
-      display: 'grid',
-      justifyItems: 'center',
-      alignContent: 'center',
-      width: '80px',
-      color: '#ff0701',
-      background: '#333',
-      textAlign: 'center',
-      fontSize: '40px',
-      borderRadius: theme.shape.borderRadius,
-      cursor: 'default',
-    },
-  })
-);
+const StyledNumbers = styled.div`
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  text-align: center;
+  width: 80px;
+  color: #ff0701;
+  background-color: #333333;
+  font-size: 40px;
+  border-radius: 5px;
+  cursor: default;
+`;
 
 export const NumberDisplay = ({ value }: { value: number }) => {
-  const classes = useStyles();
   const nonNegVal = value < 0 ? 0 : value;
   return (
-    <div className={classes.numbers}>
+    <StyledNumbers>
       <span>{nonNegVal.toString().padStart(3, `0`)}</span>
-    </div>
+    </StyledNumbers>
   );
 };

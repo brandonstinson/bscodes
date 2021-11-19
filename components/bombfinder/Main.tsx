@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import { NumberDisplay } from './NumberDisplay';
 import {
   GameStatus,
@@ -14,66 +14,62 @@ import {
 
 const Square = dynamic(() => import('../bombfinder/Square'), { ssr: false });
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    main: {
-      display: 'grid',
-      justifyContent: 'center',
-    },
-    container: {
-      padding: theme.spacing(1),
-      background: '#c2c2c2',
-      border: '4px outset #eceff4',
-    },
-    control: {
-      display: 'grid',
-      gridTemplateColumns: 'auto 1fr auto 1fr auto',
-      justifyItems: 'center',
-      alignItems: 'center',
-      padding: theme.spacing(1),
-      border: '4px inset #eceff4',
-      '&> span': {
-        ...theme.typography.body1,
-        fontWeight: 700,
-        color: '#1e1e1e',
-      },
-      '& button': {
-        width: '50px',
-        height: '50px',
-        outline: 'none',
-        cursor: 'pointer',
-        border: '4px outset #eceff4',
-      },
-      '& button:active': {
-        border: '4px inset #eceff4',
-      },
-    },
-    face: {
-      fontSize: '30px',
-    },
-    bombfield: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(16, auto)',
-      marginTop: theme.spacing(1),
-      alignContent: 'center',
-      justifyContent: 'center',
-      border: '4px inset #eceff4',
-    },
-  })
-);
+const StyledMain = styled.div`
+  display: grid;
+  justify-content: center;
+`;
+
+const StyledContainer = styled.div`
+  padding: 10px;
+  border: 4px outset #eceff4;
+  background-color: #c2c2c2;
+`;
+
+const StyledControl = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  justify-items: center;
+  align-items: center;
+  padding: 10px;
+  > span {
+    font-weight: normal;
+    font-size: 20px;
+    color: #1e1e1e;
+  }
+  button {
+    width: 50px;
+    height: 50px;
+    outline: none;
+    cursor: pointer;
+    border: 4px outset #eceff4;
+  }
+  button:active {
+    border: 4px inset #eceff4;
+  }
+`;
+
+const StyledFace = styled.span`
+  font-size: 30px;
+`;
+
+const StyledBombfield = styled.div`
+  display: grid;
+  grid-template-columns: repeat(16, auto);
+  margin-top: 10px;
+  align-content: center;
+  justify-content: center;
+  border: 4px inset #eceff4;
+`;
 
 const gameStatusMap = {
   ongoing: `🙂`,
   won: `😃`,
   lost: `🙁`,
 };
+const GRID_SIZE = 16;
+const NUMBER_OF_BOMBS = 40;
 
 export const Main: React.FC = () => {
-  const classes = useStyles();
-
-  const GRID_SIZE = 16;
-  const NUMBER_OF_BOMBS = 40;
-
   const newGame = (): void => {
     setGrid(generateGrid(GRID_SIZE, NUMBER_OF_BOMBS));
     setRemainingBombs(NUMBER_OF_BOMBS);
@@ -90,6 +86,7 @@ export const Main: React.FC = () => {
   const [grid, setGrid] = useState<Grid>(
     generateGrid(GRID_SIZE, NUMBER_OF_BOMBS)
   );
+
   const [remainingBombs, setRemainingBombs] = useState<number>(NUMBER_OF_BOMBS);
   const [gameStatus, setGameStatus] = useState<GameStatus>(`ongoing`);
 
@@ -106,20 +103,20 @@ export const Main: React.FC = () => {
   }, [gameStatus]);
 
   return (
-    <div className={classes.main}>
-      <div className={classes.container}>
-        <div className={classes.control}>
+    <StyledMain>
+      <StyledContainer>
+        <StyledControl>
           <NumberDisplay value={remainingBombs} />
           <span>{`<- Bombs`}</span>
           <button onClick={newGame}>
-            <span role="img" aria-label="smile" className={classes.face}>
+            <StyledFace role="img" aria-label="smile">
               {gameStatusMap[gameStatus]}
-            </span>
+            </StyledFace>
           </button>
           <span>{`Time ->`}</span>
           <NumberDisplay value={0} />
-        </div>
-        <div className={classes.bombfield}>
+        </StyledControl>
+        <StyledBombfield>
           {grid.map((row) =>
             row.map((square) => (
               <Square
@@ -131,8 +128,8 @@ export const Main: React.FC = () => {
               />
             ))
           )}
-        </div>
-      </div>
-    </div>
+        </StyledBombfield>
+      </StyledContainer>
+    </StyledMain>
   );
 };

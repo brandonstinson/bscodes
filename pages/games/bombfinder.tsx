@@ -1,32 +1,20 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import styled from 'styled-components';
 import { ContentContainer } from '../../components/ContentContainer';
 import { Instructions } from '../../components/bombfinder/Instructions';
 import { Main } from '../../components/bombfinder/Main';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    container: {
-      display: 'grid',
-      gap: theme.spacing(4),
-    },
-    title: {
-      textAlign: 'center',
-      ...theme.typography.h2,
-    },
-  })
-);
+const StyledContainer = styled.div`
+  display: grid;
+  gap: 25px;
+`;
 
-const Bombfinder: React.FC = () => {
-  const classes = useStyles();
-  return (
-    <ContentContainer>
-      <div className={classes.container}>
-        <div className={classes.title}>BombFinder</div>
-        <Instructions />
-        <Main />
-      </div>
-    </ContentContainer>
-  );
-};
+const Bombfinder: React.FC = () => (
+  <ContentContainer title="Bomb Finder">
+    <StyledContainer>
+      <Instructions />
+      <Main />
+    </StyledContainer>
+  </ContentContainer>
+);
 
 export default Bombfinder;
