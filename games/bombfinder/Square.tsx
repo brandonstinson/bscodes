@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { GameStatus, SquareType } from '../../utils/bombfinderUtils';
+import { GameStatus, SquareType } from './bombfinderUtils';
 
 const StyledSquare = styled.div<{ gameStatus: GameStatus; square: SquareType }>`
   background-color: ${({ square }) =>

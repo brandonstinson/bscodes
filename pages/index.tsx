@@ -1,9 +1,9 @@
-const Home = () => {
-  return (
-    <div>
-      <div>Coming soon...</div>
-    </div>
-  );
-};
+import { ContentContainer } from '../components/ContentContainer';
+
+const Home = () => (
+  <ContentContainer title="BS">
+    <div>Coming soon...</div>
+  </ContentContainer>
+);
 
 export default Home;

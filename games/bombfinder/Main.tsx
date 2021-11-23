@@ -10,9 +10,9 @@ import {
   SquareType,
   statusCount,
   updateGrid,
-} from '../../utils/bombfinderUtils';
+} from './bombfinderUtils';
 
-const Square = dynamic(() => import('../bombfinder/Square'), { ssr: false });
+const Square = dynamic(() => import('./Square'), { ssr: false });
 
 const StyledMain = styled.div`
   display: grid;

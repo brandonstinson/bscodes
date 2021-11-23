@@ -6,11 +6,9 @@ const StyledHeader = styled.header`
   grid-template-columns: auto 1fr;
   align-items: center;
   padding: 20px 50px;
-  font-weight: bold;
 `;
 
 const StyledTitle = styled.div`
-  font-size: 50px;
   > a {
     color: ${({ theme }) => theme.color.primary};
   }
@@ -21,7 +19,6 @@ const StyledNav = styled.nav`
   grid-template-columns: auto auto;
   gap: 40px;
   justify-content: end;
-  font-size: 30px;
 `;
 
 export const Header = () => {
@@ -29,15 +26,21 @@ export const Header = () => {
     <StyledHeader>
       <StyledTitle>
         <Link href="/">
-          <a>BS</a>
+          <a>
+            <h1>BS</h1>
+          </a>
         </Link>
       </StyledTitle>
       <StyledNav>
         <Link href="/games">
-          <a>Games</a>
+          <a>
+            <h3>Games</h3>
+          </a>
         </Link>
         <Link href="/projects">
-          <a>Projects</a>
+          <a>
+            <h3>Projects</h3>
+          </a>
         </Link>
       </StyledNav>
     </StyledHeader>

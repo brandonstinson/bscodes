@@ -3,14 +3,9 @@ import styled from 'styled-components';
 const StyledContentContainer = styled.div`
   display: grid;
   justify-content: center;
+  justify-items: center;
   gap: 30px;
   padding: 0 50px 80px;
-`;
-
-const StyledTitle = styled.div`
-  font-size: 40px;
-  font-weight: bold;
-  text-align: center;
 `;
 
 type Props = {
@@ -20,7 +15,7 @@ type Props = {
 
 export const ContentContainer = ({ children, title }: Props) => (
   <StyledContentContainer>
-    {title && <StyledTitle>{title}</StyledTitle>}
+    {title && <h2>{title}</h2>}
     {children}
   </StyledContentContainer>
 );

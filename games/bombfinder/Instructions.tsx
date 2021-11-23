@@ -10,7 +10,7 @@ const StyledInstructions = styled.div`
 
 const StyledEmoji = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 25px;
 `;
 
 export const Instructions = () => (

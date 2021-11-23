@@ -4,16 +4,36 @@ import Head from 'next/head';
 import { Header } from '../components/Header';
 
 const GlobalStyle = createGlobalStyle`
-  body {
+  *, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+  }
+  body {
     background-color: #2B303A;
     color: #FFFBFA;
   }
   a {
     text-decoration: none;
     color: #ECA400;
+  }
+  h1 {
+    font-size: 40px;
+  }
+  h2 {
+    font-size: 35px;
+  }
+  h3 {
+    font-size: 30px;
+  }
+  h4 {
+    font-size: 25px;
+  }
+  h5 {
+    font-size: 20px;
+  }
+  h6 {
+    font-size: 15px;
   }
 `;
 
@@ -24,19 +44,17 @@ const theme = {
   },
 };
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  return (
-    <>
-      <Head>
-        <title>BS</title>
-      </Head>
-      <GlobalStyle />
-      <ThemeProvider theme={theme}>
-        <Header />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </>
-  );
-};
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <>
+    <Head>
+      <title>BS</title>
+    </Head>
+    <GlobalStyle />
+    <ThemeProvider theme={theme}>
+      <Header />
+      <Component {...pageProps} />
+    </ThemeProvider>
+  </>
+);
 
 export default MyApp;

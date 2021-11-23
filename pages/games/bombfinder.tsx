@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ContentContainer } from '../../components/ContentContainer';
-import { Instructions } from '../../components/bombfinder/Instructions';
-import { Main } from '../../components/bombfinder/Main';
+import { Instructions } from '../../games/bombfinder/Instructions';
+import { Main } from '../../games/bombfinder/Main';
 
 const StyledContainer = styled.div`
   display: grid;
