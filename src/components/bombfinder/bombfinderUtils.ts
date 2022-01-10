@@ -8,15 +8,19 @@ interface BombLocations {
   [key: number]: number[];
 }
 
-export interface SquareType {
+export type SquareType = `empty` | `bomb`;
+export type SqureAdjacent = number;
+export type SquareStatus = `covered` | `uncovered` | `flagged`;
+
+export interface Square {
   row: number;
   col: number;
-  type: `empty` | `bomb`;
-  adjacent: number;
-  status: `covered` | `uncovered` | `flagged`;
+  type: SquareType;
+  adjacent: SqureAdjacent;
+  status: SquareStatus;
 }
 
-export type Grid = SquareType[][];
+export type Grid = Square[][];
 
 export type GameStatus = `ongoing` | `won` | `lost`;
 
@@ -55,7 +59,7 @@ export const generateGrid = (gridSize: number, numberOfBombs: number): Grid => {
   const bombs = generateBombs(gridSize, numberOfBombs);
   const outerArray: Grid = [];
   for (let i = 0; i < gridSize; i++) {
-    const innerArr: SquareType[] = [];
+    const innerArr: Square[] = [];
     for (let j = 0; j < gridSize; j++) {
       if (bombs[i] && bombs[i].includes(j)) {
         innerArr.push({ row: i, col: j, type: `bomb`, adjacent: 0, status: `covered` });
@@ -69,8 +73,8 @@ export const generateGrid = (gridSize: number, numberOfBombs: number): Grid => {
   return outerArray;
 };
 
-const getAdjacentSquares = (grid: Grid, i: number, j: number): SquareType[] => {
-  const adjacent: SquareType[] = [];
+const getAdjacentSquares = (grid: Grid, i: number, j: number): Square[] => {
+  const adjacent: Square[] = [];
   // previous row
   if (grid[i - 1]) {
     if (grid[i - 1][j - 1]) adjacent.push(grid[i - 1][j - 1]);
@@ -159,7 +163,7 @@ export const getGameStatus = (grid: Grid, gridSize: number, numberOfBombs: numbe
   return `ongoing`;
 };
 
-export const updateGrid = (grid: Grid, square: SquareType, clickType: string): Grid => {
+export const updateGrid = (grid: Grid, square: Square, clickType: string): Grid => {
   const newGrid = [...grid];
   if (clickType === `right`) {
     square.status = square.status === `covered` ? `flagged` : `covered`;
@@ -175,7 +179,7 @@ export const updateGrid = (grid: Grid, square: SquareType, clickType: string): G
   return newGrid;
 };
 
-const uncoverAdjacents = (grid: Grid, square: SquareType): void => {
+const uncoverAdjacents = (grid: Grid, square: Square): void => {
   const adjacents = getAdjacentSquares(grid, square.row, square.col);
   const adjacentZeros = adjacents.filter(
     (el) => el.status === `covered` && el.type === `empty` && el.adjacent === 0

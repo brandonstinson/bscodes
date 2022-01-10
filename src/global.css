@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #2b303a;
+  color: #fffbfa;
+}
+
+a {
+  text-decoration: none;
+  color: #eca400;
+}
+
+@layer components {
+  .inset-border {
+    border-style: inset;
+  }
+
+  .outset-border {
+    border-style: outset;
+  }
+}

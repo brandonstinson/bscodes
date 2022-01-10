@@ -1,4 +1,4 @@
-import { ContentContainer } from '../../components/ContentContainer';
+import { ContentContainer } from 'components/ContentContainer';
 
 const Projects = () => (
   <ContentContainer title="Projects">

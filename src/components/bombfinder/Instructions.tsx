@@ -1,22 +1,7 @@
-import styled from 'styled-components';
-
-const StyledInstructions = styled.div`
-  display: grid;
-  justify-content: center;
-  text-align: center;
-  font-weight: bold;
-  font-size: 20px;
-`;
-
-const StyledEmoji = styled.div`
-  display: flex;
-  gap: 25px;
-`;
-
 export const Instructions = () => (
-  <StyledInstructions>
+  <div className="grid justify-center text-center text-xl">
     <div>Left click to uncover. Right click to flag.</div>
-    <StyledEmoji>
+    <div className="flex gap-6">
       <span role="img" aria-label="ongoing-emoji">
         🙂{` `}Keep Playing
       </span>
@@ -26,6 +11,6 @@ export const Instructions = () => (
       <span role="img" aria-label="lost-emoji">
         🙁{` `}You Lost
       </span>
-    </StyledEmoji>
-  </StyledInstructions>
+    </div>
+  </div>
 );
